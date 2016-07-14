@@ -1,6 +1,7 @@
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.prismacm.geolocalizarsencillo" version="3.0.0">
   <name>Geolocalizar (Nivel 3)</name>
-  <description>Teniendo varios puntos ver el más cercano</description>
+  <description>1) El más cercano es este: X [Mostrar camino]
+2) Que muestra los que están en el radio de X metros / km, y te muestre todos (además del más cercano)</description>
   <author href="http://phonegap.com" email="ivonne@prismacm.com">IVONNE</author>
   <content src="index.html"/>
   <preference name="permissions" value="none"/>
