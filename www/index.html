@@ -12,7 +12,7 @@
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 	<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" charset="utf-8">
-
+		/*Declaramos variables globales para poder modificarlas y no crearlas en cada acción */
 		var lat_actual = 0;
 		var log_actual = 0;
 		var distancia1 = 0;
@@ -23,21 +23,17 @@
 		var circulo =  new google.maps.Circle();
 		var marker_sitios =new google.maps.Marker();
 		var marker_nearest =new google.maps.Marker();
+		var marker =new google.maps.Marker();
 	
 		
 		// Options: throw an error if no update is received every 30 seconds.
 		//var watchID = navigator.geolocation.watchPosition(onSuccess, onError, {maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }); // esta me mira cada momento
 		//var watchID = navigator.geolocation.watchPosition(onSuccess, onError, 500000);
+		/*Con esta variable mirará la posicion cuando se lo indique*/
 		var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, {maximumAge: 30000, timeout: 5000, enableHighAccuracy: true }); // esta me mira una vez
-		
-		//La función que carga el mapa con la longitud y latitud indicada y añade la info al html
-		function initMap(lat,log) {
-			
-		}
 
-			
-			//Esta función hace recarga el punto en el que nos encontramos y guarda el resultado (llamando a onSuccess que a su vez llama a Initialize)
-			function clearWatch() { 
+		//Esta función hace recarga el punto en el que nos encontramos y guarda el resultado (llamando a onSuccess que a su vez llama a Initialize)
+		function clearWatch() { 
 				var watchID = navigator.geolocation.getCurrentPosition(
 								onSuccess, 
 								onError, 
@@ -74,7 +70,6 @@
 				https://developers.google.com/maps/documentation/javascript/geocoding?hl=es#GeocodingResponses
 			*/
 				var geocoder;
-				//var map;
 				var infowindow = new google.maps.InfoWindow();	
 				var latlng = new google.maps.LatLng(lat,log);
 					var mapOptions = {
@@ -84,7 +79,7 @@
 					}
 				 
 				map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions );
-				var marker = new google.maps.Marker({
+				marker = new google.maps.Marker({
 									position: latlng,
 									icon: 'img/man.png',
 									map: map,
@@ -210,12 +205,11 @@
 		
 
 		  function cargar_mas_cercanos(distancia){
-		  /*********Reseteamos los marker y circulos anteriores********************************/
+		  /*********Reseteamos circulos anteriores********************************/
 				circulo.setMap(null);
-			
-	
+				 marker_sitios = [];
 
-				
+			/*********************************************/	
 				 $.ajax({
 							method: "POST",
 						url:'http://pruebas.neoprisma.com/ajax-app/cargar_cercanos.php',
@@ -228,11 +222,9 @@
 								center: latlng,
 								mapTypeId: 'roadmap'
 							}
-						 
-					
-						
+							/*he mandado el número de elementos del array porque por jquery no los cogía*/
 							var numero = resp['numero'];
-							
+							/*Marcamos en el mapa el array de sitios cercanos*/
 							for(var i = 0;i < numero;i++){
 								
 								var latlng_sitios = new google.maps.LatLng(resp['sitios'][i].lat,resp['sitios'][i].lon);
@@ -245,8 +237,8 @@
 							
 							}
 			
-
-						 // Limpiamos el select
+					
+						 // Limpiamos el select, para que muestre los lugares dentro del radio solicitado.
 					
 							$("#sitio").find('option').remove();
 
@@ -255,21 +247,18 @@
 							   $("#sitio").append('<option value="' + resp['sitios'][i].lat +',' + resp['sitios'][i].lon +'">' + resp['sitios'][i].nombre + '</option>');
 							}
 									
-									/*Marco la distancia mas cercana al punto donde estoy , dado un array de destinos */
-								
-									 
-										var latlng_cercano = new google.maps.LatLng(resp['cercano'].lat,resp['cercano'].lon);
+								/*Marco la distancia más cercana al punto donde estoy , dado un array de destinos */
+										var latlng_nearest = new google.maps.LatLng(resp['cercano'].lat,resp['cercano'].lon);
 										var punto_actual = new google.maps.LatLng(lat_actual,log_actual);
 										marker_nearest = new google.maps.Marker({
-													position: latlng_cercano,
+													position: latlng_nearest,
 													map: map,
 													title: 'la más cercana'
 										});
 									
-									
+									/* *1 para normalizar la variable como un numero*/
 										var r= distancia * 1;
-									  
-									  
+
 										/*Marcamos un circulo cada vez que seleccionan el radio*/
 										var circulo_options = {
 										  strokeColor: "#c4c4c4",
