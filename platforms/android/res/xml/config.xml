@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.prismacm.geolocalizarsencillo" version="3.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <preference name="loglevel" value="DEBUG" />
+    <feature name="Whitelist">
+        <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <allow-intent href="market:*" />
+    <name>Geolocalizar (Nivel 3)</name>
+    <description>Marca puntos dentro de un radio y dice cual es el mas cercano</description>
+    <author email="ivonne@prismacm.com" href="http://phonegap.com">IVONNE</author>
+    <content src="index.html" />
+    <preference name="permissions" value="none" />
+    <preference name="orientation" value="landscape" />
+    <preference name="target-device" value="universal" />
+    <preference name="fullscreen" value="true" />
+    <preference name="webviewbounce" value="true" />
+    <preference name="prerendered-icon" value="true" />
+    <preference name="stay-in-webview" value="false" />
+    <preference name="ios-statusbarstyle" value="black-opaque" />
+    <preference name="detect-data-types" value="true" />
+    <preference name="exit-on-suspend" value="false" />
+    <preference name="show-splash-screen-spinner" value="true" />
+    <preference name="auto-hide-splash-screen" value="true" />
+    <preference name="disable-cursor" value="false" />
+    <preference name="android-minSdkVersion" value="14" />
+    <preference name="android-installLocation" value="auto" />
+    <gap:plugin name="org.apache.cordova.geolocation" />
+    <gap:plugin name="org.apache.cordova.globalization" />
+    <icon src="icon.jpg" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+</widget>
