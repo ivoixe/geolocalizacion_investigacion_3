@@ -36,7 +36,7 @@
 				var infowindow = new google.maps.InfoWindow();	
 				var latlng = new google.maps.LatLng(lat,log);
 					var mapOptions = {
-						zoom: 12,
+						zoom:12,
 						center: latlng,
 						mapTypeId: 'roadmap'
 					}
@@ -104,6 +104,7 @@
 					// Note that Javascript allows us to access the constant
 					// using square brackets and a string value as its
 					// "property."
+					
 					travelMode: google.maps.TravelMode[selectedMode]
 				},
 				function(response, status) {
@@ -126,6 +127,7 @@
 						console.log('Ha fallado el sistema debido a ' + status);
 					}
 					directionsDisplay.setDirections(response);
+					 
 				}
 			);
 		}//fin de la funcion calculateAndDisplayRoute

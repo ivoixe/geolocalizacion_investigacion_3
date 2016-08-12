@@ -49,6 +49,8 @@
 			}
 		});
 		$('#reset').click( function(){
+		   
+			$('#distancia').val('sel');
 			initialize(lat_actual,log_actual);	
 		});
 		
@@ -74,44 +76,58 @@
 	</style>
   </head>
   <body>
-	<div class="ui-corner-all">
-		<p id="resultado"></p>
-
-		 <button type="submit" value="" id="reset" >Volver a ubicar</button>
-		<label for="distancia">Selecciona la distancia que mejor te convenga</label>	
-		<select id="distancia">
-		  <option value="sel">-selecciona-</option>
-		  <option value="1">a 1 km</option>
-		  <option value="2">a 2 km</option>
-		  <option value="3">a 3 km</option>
-		  <option value="4">a 4 km</option>
-		</select>
-		<p id="resultado_coordenadas"></p>
-
-		<!-- /*ESTE LO INTENTARE CARGAR DESDE LA BASE DE DATOS DADO LA DISTANCIA DEL SELECT*/ !-->
-		<div id="sitios_cercanos" class="hidden">
-			<label for="sitio">Selecciona el sitio al que te quieres dirigir</label>	
-			<select id="sitio" class=""></select>
-		</div>
-		<div id="route" class="hidden">
-			<label for="mode">Selecciona modo de transporte</label>	
-			<select id="mode">
-			  <option value="DRIVING">Coche</option>
-			  <option value="WALKING">Andando</option>
-			  <option value="BICYCLING">Bicicleta</option>
-			  <option value="TRANSIT">Transporte público</option>
-			</select>
-		
-
-		 <button type="submit" value="" id="ruta" >Ruta</button>
-		</div>
-		 <p id="directions-panel"></p>
-		 <div id="map-canvas">
-										
-		 </div>
+	<div data-role="page" class="ui-corner-all">
+		<div data-role="content">
+				<p id="resultado"></p>
+             <fieldset data-role="controlgroup" data-type="horizontal">
+					 <button type="submit" value="" id="reset" >Volver a ubicar</button>
+					<label for="distancia">Selecciona la distancia que mejor te convenga</label>	
+					<select id="distancia">
+					  <option value="sel">-selecciona-</option>
+					  <option value="1">a 1 km</option>
+					  <option value="2">a 2 km</option>
+					  <option value="3">a 3 km</option>
+					  <option value="4">a 4 km</option>
+					</select>
+			 </fieldset>
+					<p id="resultado_coordenadas"></p>
 	
- </div>
-  </body>
+			<div id="sitios_cercanos" class="hidden">
+				<label for="sitio">Selecciona el sitio al que te quieres dirigir</label>	
+				<select id="sitio" class=""></select>
+			</div>
+			<div id="route" class="hidden">
+				<label for="mode">Selecciona modo de transporte</label>	
+				<select id="mode">
+				<option value="DRIVING">Coche</option>
+				<option value="WALKING">Andando</option>
+				<option value="BICYCLING">Bicicleta</option>
+				<option value="TRANSIT">Transporte público</option>
+				</select>
+
+
+				<button type="submit" value="" id="ruta" >Ruta</button>
+			</div>
+		
+				 <p id="directions-panel"></p>
+			
+				<div role="main" class="ui-content" id="map-canvas">
+				<!-- map loads here... -->
+				</div>
+			
+	
+			</div>
+			   <div data-role="footer">
+        <div data-role="navbar">
+            <ul>
+                <li><a href="#" data-icon="grid">Summary</a></li>
+                <li><a href="#" data-icon="star" class="ui-btn-active">Favs</a></li>
+                <li><a href="#" data-icon="gear">Setup</a></li>
+            </ul>
+        </div><!-- /navbar -->
+</div><!-- /footer -->
+		</div>
+	</body>
 </html>
 
 
