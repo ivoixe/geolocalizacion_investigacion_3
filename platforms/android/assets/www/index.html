@@ -10,255 +10,30 @@
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/jquery-1.12.4.min.js"></script>
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
-	
-
-	
-	
-	<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6cz9NsGdNE_K-eXAsZedHCNEaZRku63s"
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6cz9NsGdNE_K-eXAsZedHCNEaZRku63s"
   type="text/javascript"></script>-->
 	<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" charset="utf-8">
-		/*Declaramos variables globales para poder modificarlas y no crearlas en cada acción */
-		var lat_actual = 0;
-		var log_actual = 0;
-		var distancia1 = 0;
-		var map;
-		var ultimo_resultado = {};
-		var directionsDisplay = new google.maps.DirectionsRenderer;
-		var directionsService = new google.maps.DirectionsService;
-		var circulo =  new google.maps.Circle();
-		var marker_sitios =new google.maps.Marker();
-		var marker_nearest =new google.maps.Marker();
-		var marker =new google.maps.Marker();
+	<script type="text/javascript" charset="utf-8" src="js/funciones.js"></script>   
+   <script type="text/javascript" charset="utf-8">
 	
-		
-		// Options: throw an error if no update is received every 30 seconds.
-		//var watchID = navigator.geolocation.watchPosition(onSuccess, onError, {maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }); // esta me mira cada momento
-		//var watchID = navigator.geolocation.watchPosition(onSuccess, onError, 500000);
-		/*Con esta variable mirará la posicion cuando se lo indique*/
-		/*ESTO ES LO QUE SE CARGA AL PRINCIPIO (mapa y localizacion actual)*/
-		var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, {maximumAge: 30000, timeout: 5000, enableHighAccuracy: true }); // esta me mira una vez
-		
-		//Cuando conseguimos localizarnos ...
-			function onSuccess(position) {
-				var element = document.getElementById('geolocation');
-				initialize(position.coords.latitude,position.coords.longitude);				
-				
-				return position;
-			}
-			
-			//Si algo fallase al localizarnos...
-			function onError(error) {
-				console.log('code: '    + error.code    + '\n' +
-					  'message: ' + error.message + '\n');
-			}
-			
-			//Posiciona el marcador en el MAPA basandose en nuestra geolocalización (vía clearWatch() o getCurrentPosition() al iniciar la app)
-			function initialize(lat,log) {
-			/*
-				Basado en un código en
-				https://developers.google.com/maps/documentation/javascript/geocoding?hl=es#GeocodingResponses
-			*/
-				var geocoder;
-				var infowindow = new google.maps.InfoWindow();	
-				var latlng = new google.maps.LatLng(lat,log);
-					var mapOptions = {
-						zoom: 12,
-						center: latlng,
-						mapTypeId: 'roadmap'
-					}
-				 
-			
-				map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions );
-				marker = new google.maps.Marker({
-									position: latlng,
-									icon: 'img/man.png',
-									map: map,
-									title: 'Estas aquí!'
-								  });
-				/*Con esto marcamos la ruta en el mapa*/
-				directionsDisplay.setMap(map);
-
-				var dir="";
-				var element = document.getElementById('resultado');
-				geocoder = new google.maps.Geocoder();
-				geocoder.geocode({"latLng": latlng}, function(results, status){
-				
-				if (status == google.maps.GeocoderStatus.OK)
-				{ 
-					if (results[0]) //Salen 8 resultados; uno nuestra posición, la posición de nuestra provincia, país, ....
-					{   
-						ultimo_resultado = results[0];
-						dir = "<p><strong>localización actual: </strong>" + results[0].formatted_address + "</p>";
-				
-						
-						lat_actual = lat;
-						log_actual = log;
-				
-					
-					}else{
-						dir = "<p>No se ha podido obtener ninguna dirección en esas coordenadas.</p>";
-					}
-				}else{
-					dir = "<p>El Servicio de Codificación Geográfica ha fallado con el siguiente error: " + status + ".</p>";
-				}
-
-				element.innerHTML = dir;
-				
-			});
-			}
-
-//CALCULA LA RUTA EN BASE AL MODO DE TRANSPORTE
-
-		function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-		
-			/*Con selectesMode cogemos la variable que nos indica el medio de transporte*/
-			var selectedMode = document.getElementById('mode').value;
-			var destiny = document.getElementById('sitio').value;
-			var result=destiny.split(',');
-			/*multiplicar por uno para que lo tome como un número porque si se la pasaba sin multiplicar no lo reconocia como numero*/
-		    var lat_find= result[0]*1;
-		    var lan_find= result[1]*1;
-
-			distancia1=0;
-			/*direccionsservice api de google*/
-			directionsService.route(
-				{
-					origin: {lat: lat_actual, lng: log_actual},  // 
-					destination: {lat: lat_find,lng:lan_find},  // 
-					// Note that Javascript allows us to access the constant
-					// using square brackets and a string value as its
-					// "property."
-					travelMode: google.maps.TravelMode[selectedMode]
-				},
-				function(response, status) {
-					if (status == google.maps.DirectionsStatus.OK) {
-						var route = response.routes[0];//no hay routes[1]..
-						var summaryPanel = document.getElementById('directions-panel');
-						summaryPanel.innerHTML = '';
-						// For each route, display summary information.
-						for (var i = 0; i < route.legs.length; i++) {
-							var routeSegment = i + 1;
-							summaryPanel.innerHTML += '<b>origen:</b><br>';
-							summaryPanel.innerHTML += route.legs[i].start_address + ' to <br/> ';
-							summaryPanel.innerHTML += '<b>destino:</b><br>';
-							summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-							summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-							/*DISTANCIA NUMERICA PARA PODER HACER OPERACIONES */
-							distancia1= route.legs[i].distance.value;
-						}
-					} else {
-						console.log('Ha fallado el sistema debido a ' + status);
-					}
-					directionsDisplay.setDirections(response);
-				}
-			);
-		}//fin de la funcion calculateAndDisplayRoute
-		
-		function cargar_circulos(distancia){
-			
-			/*Marcamos un circulo cada vez que seleccionan el radio */
-			var punto_actual = new google.maps.LatLng(lat_actual,log_actual);
-			var r= distancia * 1000;//por mil porque tuve que cambiar los datos y para por
-
-			var circulo_options = {
-			  strokeColor: "#c4c4c4",
-			  strokeOpacity: 0.35,
-			  strokeWeight: 0,
-			  fillOpacity: 0.35,
-			  map: map,    
-			  radius: r,    // 10 miles in metres
-			  fillColor: '#00c4c4',
-			  center:punto_actual
-			};
-			
-			circulo = new google.maps.Circle(circulo_options);
-			
-		   
-		}
-
-/*BUSCA LOS LUGARES MAS CERCANOS a una distancia seleccionada*/
-		function cargar_mas_cercanos(distancia){
-		  /*********Reseteamos valores********************************/
-			circulo.setMap(null);
-			/*No se si sea lo correcto pero con esto vuelve a cargar el mapa resetado*/
-			initialize(lat_actual,log_actual);	
-			// Limpiamos el select, para que muestre los lugares dentro del radio solicitado.
-					
-			$("#sitio").find('option').remove();
-		/*********************************************/	
-				cargar_circulos(distancia);
-				 $.ajax({
-						method: "POST",
-						url:'http://pruebas.neoprisma.com/ajax-app/cargar_cercanos.php',
-						data: ({lat:lat_actual,log:log_actual,distancia:distancia}),
-						dataType: "json",
-						success: function(resp){
-							var latlng = new google.maps.LatLng(lat_actual,log_actual);
-							var mapOptions = {
-								zoom: 12,
-								center: latlng,
-								mapTypeId: 'roadmap'
-							}
-							/*he mandado el número de elementos del array porque por jquery no los cogía*/
-							var numero = resp['numero'];
-									
-							/*Marco la distancia más cercana al punto donde estoy , dado un array de destinos */
-							var latlng_nearest = new google.maps.LatLng(resp['cercano'].latitud,resp['cercano'].longitud);
-							var punto_actual = new google.maps.LatLng(lat_actual,log_actual);
-							marker_nearest = new google.maps.Marker({
-										position: latlng_nearest,
-										map: map,
-										title: 'la más cercana '+ resp['cercano'].nombre
-							});
-						  
-							/*Marcamos en el mapa el array de sitios cercanos*/
-							
-							if(numero != 0 ) {
-								for(var i = 1;i < numero;i++){
-									
-									var latlng_sitios = new google.maps.LatLng(resp['sitios'][i].latitud,resp['sitios'][i].longitud);
-									marker_sitios = new google.maps.Marker({
-												position: latlng_sitios,
-												icon: 'img/map-localization.png',
-												map: map,
-												title:'cercanos'+ resp['sitios'][i].nombre
-									});
-								
-								}
-							}
-			
-					
-						
-
-						/*Rellenamos el select de acuerdo a la distancia*/
-							for(var i = 0;i < numero;i++){
-							   $("#sitio").append('<option value="' + resp['sitios'][i].latitud +',' + resp['sitios'][i].longitud +'">' + resp['sitios'][i].nombre+ resp['sitios'][i].id+'</option>');
-							}
-									
-									
-							},
-							error: function(){
-										// Limpiamos el select, para que muestre los lugares dentro del radio solicitado.
-					
-										$("#sitio").find('option').remove();
-							
-									console.log('no hay lugares dentro del radio elegido.');
-								}
-							});
-		}//fin de la funcion cargar_mas_cercanos
-		
 	
 
 	$(document).ready(function() {
 			
 		$("#ruta").click(function() {
-			calculateAndDisplayRoute(directionsService, directionsDisplay);	
+			var destino =  $('#sitio').val();
+			var mode =  $('#mode').val();
+		
+			calculateAndDisplayRoute(directionsService, directionsDisplay,destino,mode);	
+			
 		});
+		
 		
 		//cuando selecciona el medio de transporte
 			$( "#mode" ).on('change', function() {
-			calculateAndDisplayRoute(directionsService, directionsDisplay);	
+			var destino =  $('#sitio').val();
+			var mode =  $('#mode').val();
+			calculateAndDisplayRoute(directionsService, directionsDisplay,destino,mode);	
 		});
 	    //Cuando selecciona una distancia diferente
 		$( "#distancia" ).on('change', function() {
@@ -270,6 +45,17 @@
 				$('#route').addClass('hidden');
 			}
 		});
+		$('#reset').click( function(){
+			initialize(lat_actual,log_actual);	
+		});
+		
+		
+		// Options: throw an error if no update is received every 30 seconds.
+		//var watchID = navigator.geolocation.watchPosition(onSuccess, onError, {maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }); // esta me mira cada momento
+		//var watchID = navigator.geolocation.watchPosition(onSuccess, onError, 500000);
+		/*Con esta variable mirará la posicion cuando se lo indique*/
+		/*ESTO ES LO QUE SE CARGA AL PRINCIPIO (mapa y localizacion actual)*/
+		var watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, {maximumAge: 30000, timeout: 5000, enableHighAccuracy: true }); // esta me mira una vez
 	});
     </script>
 	<style>
@@ -288,7 +74,7 @@
 
 	<p id="resultado"></p>
 
-	
+	 <button type="submit" value="" id="reset" >Volver a ubicar</button>
 	<label for="distancia">Selecciona la distancia que mejor te convenga</label>	
 	<select id="distancia">
       <option value="sel">-selecciona-</option>

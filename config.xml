@@ -1,4 +1,4 @@
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.prismacm.geolocalizarcompleto" version="3.5.0">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.prismacm.geolocalizarcompleto" version="3.5.1">
   <name>Geolocalizar (Nivel 3)</name>
   <description>Marca puntos dentro de un radio y dice cual es el mas cercano</description>
   <author href="http://phonegap.com" email="ivonne@prismacm.com">IVONNE</author>
