@@ -9,10 +9,13 @@
 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
 <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6cz9NsGdNE_K-eXAsZedHCNEaZRku63s"
   type="text/javascript"></script>-->
+    <link  href="css/jquery.mobile-1.4.5.min.css" rel="stylesheet" type="text/css"></link>
 	<link href="http://code.google.com/apis/maps/documentation/javascript/examples/default.css" rel="stylesheet" type="text/css" />
+	
 	<script type="text/javascript" charset="utf-8" src="js/funciones.js"></script>   
    <script type="text/javascript" charset="utf-8">
 	
@@ -71,43 +74,43 @@
 	</style>
   </head>
   <body>
+	<div class="ui-corner-all">
+		<p id="resultado"></p>
 
-	<p id="resultado"></p>
-
-	 <button type="submit" value="" id="reset" >Volver a ubicar</button>
-	<label for="distancia">Selecciona la distancia que mejor te convenga</label>	
-	<select id="distancia">
-      <option value="sel">-selecciona-</option>
-      <option value="1">a 1 km</option>
-      <option value="2">a 2 km</option>
-      <option value="3">a 3 km</option>
-      <option value="4">a 4 km</option>
-    </select>
-	<p id="resultado_coordenadas"></p>
-
-	<!-- /*ESTE LO INTENTARE CARGAR DESDE LA BASE DE DATOS DADO LA DISTANCIA DEL SELECT*/ !-->
-	<div id="sitios_cercanos" class="hidden">
-		<label for="sitio">Selecciona el sitio al que te quieres dirigir</label>	
-		<select id="sitio" class=""></select>
-	</div>
-	<div id="route" class="hidden">
-		<label for="mode">Selecciona modo de transporte</label>	
-		<select id="mode">
-		  <option value="DRIVING">Coche</option>
-		  <option value="WALKING">Andando</option>
-		  <option value="BICYCLING">Bicicleta</option>
-		  <option value="TRANSIT">Transporte público</option>
+		 <button type="submit" value="" id="reset" >Volver a ubicar</button>
+		<label for="distancia">Selecciona la distancia que mejor te convenga</label>	
+		<select id="distancia">
+		  <option value="sel">-selecciona-</option>
+		  <option value="1">a 1 km</option>
+		  <option value="2">a 2 km</option>
+		  <option value="3">a 3 km</option>
+		  <option value="4">a 4 km</option>
 		</select>
-	
+		<p id="resultado_coordenadas"></p>
 
-	 <button type="submit" value="" id="ruta" >Ruta</button>
-	</div>
-	 <p id="directions-panel"></p>
-	 <div id="map-canvas">
-									
-	 </div>
-	
+		<!-- /*ESTE LO INTENTARE CARGAR DESDE LA BASE DE DATOS DADO LA DISTANCIA DEL SELECT*/ !-->
+		<div id="sitios_cercanos" class="hidden">
+			<label for="sitio">Selecciona el sitio al que te quieres dirigir</label>	
+			<select id="sitio" class=""></select>
+		</div>
+		<div id="route" class="hidden">
+			<label for="mode">Selecciona modo de transporte</label>	
+			<select id="mode">
+			  <option value="DRIVING">Coche</option>
+			  <option value="WALKING">Andando</option>
+			  <option value="BICYCLING">Bicicleta</option>
+			  <option value="TRANSIT">Transporte público</option>
+			</select>
+		
 
+		 <button type="submit" value="" id="ruta" >Ruta</button>
+		</div>
+		 <p id="directions-panel"></p>
+		 <div id="map-canvas">
+										
+		 </div>
+	
+ </div>
   </body>
 </html>
 
