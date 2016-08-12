@@ -232,8 +232,10 @@
 						  /*Marcamos en el mapa el array de sitios cercanos*/
 							put_markers(1,'img/map-localization.png',numero,resp['sitios']);
 						 /*Rellenamos el select de acuerdo a la distancia*/
+						 var sel="";
 							for(var i = 0;i < numero;i++){
-							   $("#sitio").append('<option id="sitio_'+resp['sitios'][i].id+'" value="' + resp['sitios'][i].latitud +',' + resp['sitios'][i].longitud +'">' + resp['sitios'][i].nombre+ resp['sitios'][i].id+'</option>');
+								if(i == 0 ){ sel= 'selected = "selected"' }
+							   $("#sitio").append('<option '+sel+' id="sitio_'+resp['sitios'][i].id+'" value="' + resp['sitios'][i].latitud +',' + resp['sitios'][i].longitud +'">' + resp['sitios'][i].nombre+ resp['sitios'][i].id+'</option>');
 							}
 									
 									
